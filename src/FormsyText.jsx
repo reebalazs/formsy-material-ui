@@ -9,6 +9,10 @@ import utils from 'formsy-react/src/utils.js';
 // as doing this on the class would cause an invariant error.
 const { resetValue, componentWillReceiveProps, ...MixinFixed } = Formsy.Mixin;
 
+function txt(v) {
+  return v !== undefined ? v : '';
+}
+
 let FormsyText = React.createClass({
   mixins: [MixinFixed],
 
@@ -22,11 +26,15 @@ let FormsyText = React.createClass({
   _setMuiComponentAndMaybeFocus: _setMuiComponentAndMaybeFocus,
 
   render: function () {
+    // Replace undefined with empty string for defaultValue.
+    // The default value must not be undefined, or the field comes
+    // up in an inconsistent state.
+    // This may be a mui issue, but fixable here.
     return (
       <TextField
         {...this.props}
         ref={this._setMuiComponentAndMaybeFocus}
-        defaultValue={this.props.defaultValue}
+        defaultValue={txt(this.props.defaultValue)}
         value={this.getControlledValue()}
         errorText={this.getErrorMessage()}
         onChange={evt => this.handleChange(evt)}
@@ -41,15 +49,17 @@ let FormsyText = React.createClass({
   getControlledValue: function() {
     if (this.isControlledByCaller()) {
       // Controlled by caller: use the specified value.
-      return this.props.value;
+      // For the same reason as above: replace undefined.
+      return txt(this.props.value);
     } else {
       const value = this.getValue();
       if (this.isPristine()) {
         // When pristine: duplicate defaultValue as value.
-        return this.props.defaultValue;
+        // For the same reason as above: replace undefined.
+        return txt(this.props.defaultValue);
       } else {
         // value changed: do not set the value then.
-        return value;
+        return txt(value);
       }
     }
   },
