@@ -53,13 +53,16 @@ let FormsyText = React.createClass({
       return txt(this.props.value);
     } else {
       const value = this.getValue();
-      if (this.isPristine()) {
+      console.log('controlledValue', this.isPristine(), value);
+      if (value === undefined) {
         // When pristine: duplicate defaultValue as value.
+        // (Do not actually use isPristine here, because
+        // it will be set to false during the submit.)
         // For the same reason as above: replace undefined.
         return txt(this.props.defaultValue);
       } else {
         // value changed: do not set the value then.
-        return txt(value);
+        return value;
       }
     }
   },
@@ -75,12 +78,14 @@ let FormsyText = React.createClass({
   // The next methods are to make sure that defaultValue can be changed.
 
   componentWillReceiveProps: function (nextProps) {
+    console.log('componentWillReceiveProps', nextProps);
     const nextDefaultValue = nextProps.defaultValue;
     if (nextDefaultValue !== undefined &&
         nextDefaultValue !== this.props.defaultValue &&
         this.isPristine()) {
       // A defaultValue has changed and we are pristine.
       // Save this as the new pristine state.
+      console.log('XXX set');
       this.setState({
         _pristineValue: nextDefaultValue,
         _value: nextDefaultValue
@@ -91,6 +96,7 @@ let FormsyText = React.createClass({
   },
 
   resetValue: function () {
+    console.log('resetValue');
     // Must set it to the default value, instead of the pristine.
     const defaultValue = this.props.defaultValue;
     const pristineValue = defaultValue !== undefined ? defaultValue : this.state._pristineValue;
