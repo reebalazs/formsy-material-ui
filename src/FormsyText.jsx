@@ -40,6 +40,15 @@ const FormsyText = React.createClass({
     }
   },
 
+  componentWillUpdate(nextProps, nextState) {
+    if (nextState._isPristine && nextState._isPristine !== this.state._isPristine) {
+      // Calling state here is valid, as it cannot cause infinite recursion.
+      const value = this.controlledValue(nextProps);
+      this.setValue(value);
+      this.setState({ value });
+    }
+  },
+
   handleBlur: function handleBlur(event) {
     this.setValue(event.currentTarget.value);
     if (this.props.onBlur) this.props.onBlur(event);
