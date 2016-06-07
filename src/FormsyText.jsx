@@ -39,10 +39,6 @@ const FormsyText = React.createClass({
       this.setState({ value });
     }
   },
-  
-  componentWillReceiveProps(props) {
-    this.setState({ value: this.getValue() || '' });
-  },
 
   handleBlur: function handleBlur(event) {
     this.setValue(event.currentTarget.value);
