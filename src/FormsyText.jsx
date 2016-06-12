@@ -33,7 +33,11 @@ const FormsyText = React.createClass({
   componentWillReceiveProps(nextProps) {
     if (nextProps.value !== this.props.value || nextProps.defaultValue !== this.props.defaultValue) {
       const value = this.controlledValue(nextProps);
-      this.setValue(value);
+      if (nextProps.value !== this.props.value) {
+        // Update actual value, only if props.value has changed.
+        this.setValue(value);
+      }
+      // Update pristine value, if either props.defaultValue or props.value has changed.
       this.setState({ value });
     }
   },
