@@ -29,6 +29,7 @@ const fillInText = (wrapper, text) => {
   const inputDOM = wrapper.find('input').node;
   inputDOM.value = text;
   Simulate.change(inputDOM);
+  Simulate.blur(inputDOM);
 };
 
 describe('FormsyText', () => {
