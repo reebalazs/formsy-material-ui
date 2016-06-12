@@ -23,13 +23,11 @@ const FormsyText = React.createClass({
   },
 
   getInitialState() {
-    const value = this.controlledValue();
-    return { value };
+    return { value: this.controlledValue() };
   },
 
   componentWillMount() {
-    const value = this.controlledValue();
-    this.setValue(value);
+    this.setValue(this.controlledValue());
   },
 
   componentWillReceiveProps(nextProps) {
